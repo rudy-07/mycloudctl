@@ -102,6 +102,73 @@ Manage your self-hosted storage nodes.
 
 ---
 
+## Detailed Command Reference
+
+### Authentication
+- `mycloud login`: Sign in to your myCloud account.
+- `mycloud logout`: Sign out and clear your current session.
+- `mycloud whoami`: Display the currently logged-in user and session details.
+- `mycloud register`: Register a new myCloud account directly from the terminal.
+
+### File Operations
+- `mycloud ls [folder_id] [--node <node_id>]`: List files and folders.
+- `mycloud upload <file> [--node <node_id>]`: Upload a local file. (Use `--stash` to upload it directly to your stash).
+- `mycloud download <id>`: Download a specific file by its ID.
+- `mycloud download-all [folder_id] [--node <node_id>]`: Download all files in a folder (or all files on a specific node).
+- `mycloud rm <id>`: Delete a file.
+- `mycloud rm-all [folder_id] [--node <node_id>]`: Delete all files in a folder (or wipe a specific node).
+- `mycloud rename <id> <new_name>`: Rename an existing file.
+- `mycloud mv <id> <folder_id>`: Move a file into a different folder.
+- `mycloud info <id>`: Show detailed metadata for a file (size, creation date, type, etc.).
+- `mycloud cat <id>`: Print the contents of a text file directly to the terminal.
+- `mycloud favorite <id>` (or `mycloud fav <id>`): Toggle the favorite status of a file.
+
+### Folder Operations
+- `mycloud mkdir <name>`: Create a new folder.
+- `mycloud rmdir <id>`: Delete a folder.
+- `mycloud folders ls`: List all your folders.
+- `mycloud folders rename <id> <new_name>`: Rename a folder.
+
+### Search
+- `mycloud find <query>`: Search your entire cloud for files and folders matching the name.
+
+### Stash (Recycle Bin)
+- `mycloud stash ls`: List all items currently in your stash.
+- `mycloud stash restore <id>`: Restore a stashed item back to its original location.
+- `mycloud stash empty`: Empty the stash permanently, deleting files forever.
+
+### Sharing
+- `mycloud share create <file_id>`: Create a shareable link for a file.
+- `mycloud share ls`: List all your currently active shared items.
+- `mycloud share rm <share_id>`: Revoke and remove a share link.
+- `mycloud share direct <file_id> <username>`: Directly share a file with another registered myCloud user.
+
+### Batch Operations
+- `mycloud batch create`: Create a new batch share link.
+- `mycloud batch add <batch_id> <file_id>`: Add a file or folder to an existing batch share.
+
+### Servers / Nodes
+- `mycloud servers ls`: List all your registered private storage nodes and their statuses.
+- `mycloud servers add`: Register a new private storage node and generate its API key.
+- `mycloud servers rm <node_id>`: Remove a registered private storage node.
+
+### Storage & Stats
+- `mycloud stats` (or `mycloud storage stats`): Show current storage usage, total capacity, and limits.
+- `mycloud storage breakdown`: View a detailed breakdown of your storage consumption by file type.
+
+### Notifications
+- `mycloud notify ls`: List your recent account notifications.
+- `mycloud notify read <id>`: Mark a specific notification as read.
+- `mycloud notify read-all`: Mark all pending notifications as read.
+
+### Profile & Preferences
+- `mycloud profile view`: View your profile information.
+- `mycloud profile update-avatar <image_path>`: Set or update your profile picture.
+- `mycloud prefs ls`: Show your current user preferences.
+- `mycloud prefs set <key> <value>`: Update a specific preference.
+
+---
+
 ## Technology Stack
 
 | Category | Technology |
