@@ -77,25 +77,25 @@ graph TD
 
 ## Core Features & Commands
 
-### 📂 File & Folder Management
+### File & Folder Management
 Navigate your cloud storage as if it were a local directory.
 - `mycloud ls [folder_id]` - Browse files in dynamic, color-coded tables.
 - `mycloud upload <file> [--node <node_id>]` - Upload files with real-time progress bars.
 - `mycloud download <file_id>` - Download files efficiently.
 - `mycloud mv`, `mycloud rm`, `mycloud rename` - Standard POSIX-like commands.
 
-### 🔒 The Stash
+### The Stash
 Manage your hidden, temporary stash lifecycle.
 - `mycloud stash add <id>` - Move a file to the stash.
 - `mycloud stash ls` - View stashed files.
 - `mycloud stash empty` - Permanently clear the stash.
 
-### 🤝 Sharing & Collaboration
+### Sharing & Collaboration
 Generate secure links and manage batch sharing groups.
 - `mycloud share link <id>` - Generate a public URL.
 - `mycloud batch link` - Create a bundle link for multiple files.
 
-### 🖥️ Private Node Management
+### Private Node Management
 Manage your self-hosted storage nodes.
 - `mycloud servers ls` - List connected nodes.
 - `mycloud servers add` - Generate an API key to register a new machine.
@@ -133,6 +133,9 @@ Manage your self-hosted storage nodes.
 
 ## Contact & Links
 
+- **Email:** kanhaiffco2007@gmail.com
+- **LinkedIn:** [linkedin.com/in/rudransh-shekhar](https://linkedin.com/in/rudransh-shekhar)
+- **Portfolio:** [rudransh-shekhar.netlify.app](https://rudransh-shekhar.netlify.app)
 - **PyPI Package:** [mycloudctl](https://pypi.org/project/mycloudctl/)
 - **Live Platform:** [cloud.mysphere.co.in](https://cloud.mysphere.co.in)
 - **Ecosystem Hub:** [mysphere.co.in](https://mysphere.co.in)
