@@ -9,7 +9,7 @@
 
   ![PyPI version](https://img.shields.io/pypi/v/mycloudctl.svg)
   ![Python Versions](https://img.shields.io/pypi/pyversions/mycloudctl.svg)
-  ![License](https://img.shields.io/github/license/mysphere/mycloudctl)
+  ![License](https://img.shields.io/github/license/rudy-07/mycloudctl)
 </div>
 
 ---
@@ -75,97 +75,113 @@ graph TD
 
 ---
 
-## Core Features & Commands
+## Command Reference
 
-### File & Folder Management
-Navigate your cloud storage as if it were a local directory.
-- `mycloud ls [folder_id]` - Browse files in dynamic, color-coded tables.
-- `mycloud upload <file> [--node <node_id>]` - Upload files with real-time progress bars.
-- `mycloud download <file_id>` - Download files efficiently.
-- `mycloud mv`, `mycloud rm`, `mycloud rename` - Standard POSIX-like commands.
+The CLI commands are grouped by functionality:
 
-### The Stash
-Manage your hidden, temporary stash lifecycle.
-- `mycloud stash add <id>` - Move a file to the stash.
-- `mycloud stash ls` - View stashed files.
-- `mycloud stash empty` - Permanently clear the stash.
-
-### Sharing & Collaboration
-Generate secure links and manage batch sharing groups.
-- `mycloud share link <id>` - Generate a public URL.
-- `mycloud batch link` - Create a bundle link for multiple files.
-
-### Private Node Management
-Manage your self-hosted storage nodes.
-- `mycloud servers ls` - List connected nodes.
-- `mycloud servers add` - Generate an API key to register a new machine.
-
----
-
-## Detailed Command Reference
-
-### Authentication
-- `mycloud login`: Sign in to your myCloud account.
-- `mycloud logout`: Sign out and clear your current session.
-- `mycloud whoami`: Display the currently logged-in user and session details.
+### ▸ Authentication
+Manage your myCloud session and account.
+- `mycloud login [--username <user>] [--password <pass>]`: Sign in to your account.
+- `mycloud logout`: Sign out and clear stored session credentials.
+- `mycloud whoami`: Display the currently authenticated user and session details.
 - `mycloud register`: Register a new myCloud account directly from the terminal.
+- `mycloud forgot-password`: Request a password reset email from the terminal.
+- `mycloud reset-password`: Submit a reset token and set a new password.
 
-### File Operations
-- `mycloud ls [folder_id] [--node <node_id>]`: List files and folders.
-- `mycloud upload <file> [--node <node_id>]`: Upload a local file. (Use `--stash` to upload it directly to your stash).
-- `mycloud download <id>`: Download a specific file by its ID.
-- `mycloud download-all [folder_id] [--node <node_id>]`: Download all files in a folder (or all files on a specific node).
-- `mycloud rm <id>`: Delete a file.
-- `mycloud rm-all [folder_id] [--node <node_id>]`: Delete all files in a folder (or wipe a specific node).
-- `mycloud rename <id> <new_name>`: Rename an existing file.
-- `mycloud mv <id> <folder_id>`: Move a file into a different folder.
-- `mycloud info <id>`: Show detailed metadata for a file (size, creation date, type, etc.).
-- `mycloud cat <id>`: Print the contents of a text file directly to the terminal.
-- `mycloud favorite <id>` (or `mycloud fav <id>`): Toggle the favorite status of a file.
+### ▸ File Operations
+Core file management capabilities. Append `--node <node_id>` to target specific private storage nodes.
+- `mycloud ls [folder_id] [--node <node_id>] [--favorites] [--tree]`: List files and folders.
+- `mycloud upload <file_path> [--folder <id>] [--node <node_id>] [--stash] [--days <int>]`: Upload a file to your cloud.
+- `mycloud download <file_id> [--output <path>]`: Download a specific file by its ID.
+- `mycloud download-all [folder_id] [--node <node_id>] [--output <dir>]`: Download all files in a folder (or node).
+- `mycloud rm <file_id> [--yes]`: Delete a file.
+- `mycloud rm-all [folder_id] [--node <node_id>] [--yes]`: Delete all files in a folder or node.
+- `mycloud rename <file_id> <new_name>`: Rename an existing file.
+- `mycloud mv <file_id> <folder_id>`: Move a file into a different folder.
+- `mycloud info <file_id>`: Show detailed metadata for a file (size, MIME type, storage node, timestamps).
+- `mycloud cat <file_id>`: Print the contents of a text file directly to standard output.
+- `mycloud favorite <file_id>` (or `mycloud fav <file_id>`): Toggle favorite status of a file.
+- `mycloud favorites` (or `mycloud favs`): View all favorited files.
 
-### Folder Operations
-- `mycloud mkdir <name>`: Create a new folder.
-- `mycloud rmdir <id>`: Delete a folder.
-- `mycloud folders ls`: List all your folders.
-- `mycloud folders rename <id> <new_name>`: Rename a folder.
+### ▸ Folder Operations
+Organize files using hierarchical directories.
+- `mycloud mkdir <name> [--parent <id>] [--node <node>]` (or `mycloud folders mkdir`): Create a new folder.
+- `mycloud rmdir <folder_id> [--yes]` (or `mycloud folders rm`): Delete a folder and its contents.
+- `mycloud folders rename <folder_id> <new_name>`: Rename a folder.
+- `mycloud folders mv <folder_id> <new_parent_id>`: Move a folder into a new parent directory.
+- `mycloud folders info <folder_id>`: View details, subfolders, and file lists for a directory.
+- `mycloud folders download <folder_id> [--output <path>]`: Download an entire folder as a zip archive.
+- `mycloud folders favorite <folder_id>`: Toggle favorite status of a folder.
 
-### Search
-- `mycloud find <query>`: Search your entire cloud for files and folders matching the name.
+### ▸ Search
+Find files across your cloud by name.
+- `mycloud find <query> [--limit <n>]`: Search for files and folders matching a query.
 
-### Stash (Recycle Bin)
-- `mycloud stash ls`: List all items currently in your stash.
-- `mycloud stash restore <id>`: Restore a stashed item back to its original location.
-- `mycloud stash empty`: Empty the stash permanently, deleting files forever.
+### ▸ Stash (Temporary Lifecycle Storage)
+Manage temporary files with scheduled retention lifecycles.
+- `mycloud stash ls`: List all items currently in your stash with expiry dates.
+- `mycloud stash add <file_ids...> [--days <int>]`: Move file(s) into temporary stash with auto-expiry.
+- `mycloud stash pop <file_ids...>`: Restore stashed file(s) back into active cloud storage.
+- `mycloud stash empty [--yes]`: Permanently purge all stashed files.
 
-### Sharing
-- `mycloud share create <file_id>`: Create a shareable link for a file.
-- `mycloud share ls`: List all your currently active shared items.
-- `mycloud share rm <share_id>`: Revoke and remove a share link.
-- `mycloud share direct <file_id> <username>`: Directly share a file with another registered myCloud user.
+### ▸ Sharing & Invitations
+Share files and folders directly with users or generate public links.
+- `mycloud share send <item_id> --user <username/email> [--folder] [--permission read|write]`: Share an item with a registered user.
+- `mycloud share link <item_id> [--folder]`: Generate a public URL link for an item.
+- `mycloud share disable-link <item_id> [--type file|folder]`: Revoke a public share link.
+- `mycloud share info <item_id> [--type file|folder]`: View active shares and permission levels.
+- `mycloud share update-perm <item_id> --user-id <id> --permission <read|write> [--type file|folder]`: Update user access permission.
+- `mycloud share rm <item_id> [--type file|folder] [--with-id <id>]`: Remove access permissions.
+- `mycloud share copy <file_id>`: Copy an incoming shared file into your personal storage.
+- `mycloud share copy-folder <folder_id>`: Copy an incoming shared folder into your personal storage.
+- `mycloud share with-me`: List all files and folders shared with you.
+- `mycloud share invites`: List pending inbound share invitations.
+- `mycloud share accept <token>`: Accept an invitation to access shared content.
+- `mycloud share decline <token>`: Decline an incoming invitation.
+- `mycloud share mute <identifier>`: Mute invitations from a specific user or email.
+- `mycloud share unmute <muted_user_id>`: Unmute invitations from a user.
+- `mycloud share muted`: List all currently muted users.
 
-### Batch Operations
-- `mycloud batch create`: Create a new batch share link.
-- `mycloud batch add <batch_id> <file_id>`: Add a file or folder to an existing batch share.
+### ▸ Batch Operations
+Execute multi-file operations efficiently in a single step.
+- `mycloud batch link <ids...>`: Generate a single public share link containing multiple files.
+- `mycloud batch download <ids...> [--output <dir>]`: Download multiple files bundled in a zip archive.
+- `mycloud batch move <ids...> --dest <folder_id>`: Move multiple files to a folder.
+- `mycloud batch delete <ids...> [--yes]`: Delete multiple files in one operation.
+- `mycloud batch share <ids...> --user <email/user> [--permission read|write]`: Share multiple files with a user.
+- `mycloud batch stash <ids...> [--days <int>]`: Stash multiple files at once with retention expiry.
+- `mycloud batch unstash <ids...>`: Restore multiple stashed files simultaneously.
+- `mycloud batch unshare <ids...>`: Revoke all shares across multiple files.
+- `mycloud batch copy-shared <ids...>`: Copy multiple shared files to your cloud storage.
 
-### Servers / Nodes
-- `mycloud servers ls`: List all your registered private storage nodes and their statuses.
-- `mycloud servers add`: Register a new private storage node and generate its API key.
-- `mycloud servers rm <node_id>`: Remove a registered private storage node.
+### ▸ Private Storage Nodes
+Coordinate physical machines as private storage nodes.
+- `mycloud servers ls`: List all registered storage nodes, status, and free capacity.
+- `mycloud servers add [--name <name>] [--port <port>] [--storage-path <path>]`: Register a new storage node.
+- `mycloud servers rm <server_id>`: Remove a registered storage node from the control plane.
 
-### Storage & Stats
-- `mycloud stats` (or `mycloud storage stats`): Show current storage usage, total capacity, and limits.
-- `mycloud storage breakdown`: View a detailed breakdown of your storage consumption by file type.
+### ▸ Storage & Stats
+Monitor account limits and disk utilization.
+- `mycloud stats` (or `mycloud storage stats`): Display quota usage, bar charts, and object counts.
+- `mycloud storage nuke [--yes]`: Wipe all account files, folders, and stash after confirmation.
 
-### Notifications
-- `mycloud notify ls`: List your recent account notifications.
-- `mycloud notify read <id>`: Mark a specific notification as read.
-- `mycloud notify read-all`: Mark all pending notifications as read.
+### ▸ Notifications
+Track account events and shared file activities.
+- `mycloud notify ls [--limit <n>]`: Display recent notifications.
+- `mycloud notify read [ids]`: Mark notifications as read (omit IDs to mark all read).
+- `mycloud notify hide <ids>`: Permanently hide notifications.
 
-### Profile & Preferences
-- `mycloud profile view`: View your profile information.
-- `mycloud profile update-avatar <image_path>`: Set or update your profile picture.
-- `mycloud prefs ls`: Show your current user preferences.
-- `mycloud prefs set <key> <value>`: Update a specific preference.
+### ▸ Profile & Preferences
+Manage account security, personal details, and client settings.
+- `mycloud profile show`: Display username, email, 2FA status, and membership info.
+- `mycloud profile update [--name <str>] [--username <str>]`: Update profile information.
+- `mycloud profile 2fa [--enable/--disable]`: Toggle two-factor authentication.
+- `mycloud profile avatar-upload <image_path>`: Upload a new profile picture.
+- `mycloud profile avatar-rm`: Remove your profile picture.
+- `mycloud profile delete-account [--yes]`: Permanently delete your account and data.
+- `mycloud prefs show`: Display user interface and behavior preferences.
+- `mycloud prefs set <key> <value>`: Update a preference key.
+- `mycloud prefs sync`: Synchronize local client settings with cloud preferences.
 
 ---
 
